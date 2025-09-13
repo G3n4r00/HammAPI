@@ -1,0 +1,45 @@
+﻿namespace HammAPI.Models
+{
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    [Table("transacoes", Schema = "public")]
+    public class Transacao
+    {
+        [Key]
+        [Column("id_transacao")]
+        public long Id { get; set; }
+
+        [Required]
+        [Column("id_usuario")]
+        public long UsuarioId { get; set; }
+
+        [Required]
+        [Column("id_categoria")]
+        public long CategoriaId { get; set; }
+
+        [Required]
+        [Column("valor", TypeName = "money")]
+        public decimal Valor { get; set; }
+
+        [Required]
+        [Column("data")]
+        public DateTime Data { get; set; }
+
+        [Column("descricao")]
+        public string Descricao { get; set; }
+
+        [Column("tipo")]
+        public string Tipo { get; set; } // Receita ou Despesa
+
+        [Column("metodo_pagamento")]
+        public string MetodoPagamento { get; set; }
+
+        // Navegação
+        [ForeignKey("UsuarioId")]
+        public Usuario Usuario { get; set; }
+
+        [ForeignKey("CategoriaId")]
+        public Categoria Categoria { get; set; }
+    }
+}

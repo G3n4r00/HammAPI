@@ -8,7 +8,7 @@
     {
         [Key]
         [Column("id_usuario")]
-        public long Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [Column("primeiro_nome")]

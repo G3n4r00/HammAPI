@@ -7,11 +7,11 @@
     {
         [Key]
         [Column("id_orcamento")]
-        public long Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [Column("id_usuario")]
-        public long UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
 
         [Column("valor_limite", TypeName = "money")]
         public decimal? ValorLimite { get; set; }

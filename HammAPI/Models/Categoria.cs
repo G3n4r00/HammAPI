@@ -9,7 +9,7 @@
     {
         [Key]
         [Column("id_categoria")]
-        public long Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [Column("nome")]

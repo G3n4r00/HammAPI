@@ -8,15 +8,15 @@
     {
         [Key]
         [Column("id_transacao")]
-        public long Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [Column("id_usuario")]
-        public long UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
 
         [Required]
         [Column("id_categoria")]
-        public long CategoriaId { get; set; }
+        public Guid CategoriaId { get; set; }
 
         [Required]
         [Column("valor", TypeName = "money")]

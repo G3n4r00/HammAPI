@@ -8,11 +8,11 @@
     {
         [Key]
         [Column("id_meta")]
-        public long Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [Column("id_usuario")]
-        public long UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
 
         [Column("nome")]
         public string Nome { get; set; }

@@ -1,5 +1,6 @@
 using HammAPI.Data;
 using HammAPI.Models;
+using HammAPI.Services;
 using HammAPI.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +18,15 @@ builder.Services.AddDbContext<HammAPIDbContext>(options =>
 builder.Services.AddSingleton<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 
 
-// Add services to the container.
+// Adiciona os Serviços controllers, de relatorio e de cotacao
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<RelatorioService>();
+builder.Services.AddHttpClient<CambioService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

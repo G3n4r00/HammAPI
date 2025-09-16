@@ -14,20 +14,30 @@
         [Column("id_usuario")]
         public Guid UsuarioId { get; set; }
 
+        [Required]
         [Column("nome")]
         public string Nome { get; set; }
 
+
+        [Required]
         [Column("valor_objetivo", TypeName = "money")]
-        public decimal? ValorObjetivo { get; set; }
+        public decimal ValorObjetivo { get; set; }
 
         [Column("valor_atual", TypeName = "money")]
         public decimal? ValorAtual { get; set; }
 
+        [Column("data_inicio")]
+        public DateTime? DataInicio { get; set; }
+
+        [Required]
         [Column("dia_prazo")]
-        public DateTime? DiaPrazo { get; set; }
+        public DateTime DataAlvo { get; set; }
+
+        [Column("descricao")]
+        public string? Descricao { get; set; }
 
         [Column("status")]
-        public string Status { get; set; } // EmProgresso, Concluida, Cancelada
+        public string? Status { get; set; } // EmProgresso, Concluida, Cancelada
 
         // Navegação
         [ForeignKey("UsuarioId")]

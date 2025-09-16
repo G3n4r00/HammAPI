@@ -15,12 +15,16 @@
         [Column("nome")]
         public string Nome { get; set; }
 
+        [Required]
         [Column("tipo")]
         public string Tipo { get; set; } // Receita ou Despesa
 
         [Required]
         [Column("e_padrao")]
         public bool EPadrao { get; set; }
+
+        [Column("descricao")]
+        public string? Descricao { get; set; }
 
         // Navegação
         public ICollection<Transacao> Transacoes { get; set; }

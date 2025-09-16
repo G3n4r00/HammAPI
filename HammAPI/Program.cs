@@ -1,5 +1,6 @@
 using HammAPI.Data;
 using HammAPI.Models;
+using HammAPI.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,5 +37,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+DataPopulation.PopulateDb(app); 
 
 app.Run();

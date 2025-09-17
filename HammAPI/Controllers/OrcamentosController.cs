@@ -25,8 +25,8 @@ namespace HammAPI.Controllers
                     UsuarioId = o.UsuarioId,
                     Nome = o.Nome,
                     ValorLimite = o.ValorLimite,                   
-                    Mes = o.Mes,
-                    Ano = o.Ano,
+                    Mes = o.Mes ?? 01, //AUSTAR AQUI
+                    Ano = o.Ano ?? 2025,// AJUSTAR AQUI
                     ValorUtilizado = o.ValorUtilizado
                 })
                 .ToListAsync();

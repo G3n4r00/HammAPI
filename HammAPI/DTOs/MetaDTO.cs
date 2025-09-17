@@ -33,7 +33,7 @@ namespace HammAPI.DTOs
         public decimal ValorAtual { get; init; }
         [Required]
         public DateTime DataAlvo { get; init; }
-        public DateTime DataInicio { get; init; }
+        public DateTime? DataInicio { get; init; }
         public string? Descricao { get; init; }
         public string? Status { get; init; }
     }

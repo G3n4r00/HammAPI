@@ -21,7 +21,7 @@ namespace HammAPI.Controllers
         [HttpGet("cotacao/{moeda}")]
         public async Task<ActionResult<CambioCotacaoDto>> GetCotacao(string moeda)
         {
-            var cotacao = await _cambioService.ObterCotacaoAsync(moeda.ToUpper());
+            var cotacao = await _cambioService.ObterCotacaoAsync(moeda.ToLower());
             if (cotacao == null) return NotFound(new { message = "Moeda não encontrada." });
             return Ok(cotacao);
         }

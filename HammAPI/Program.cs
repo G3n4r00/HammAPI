@@ -4,13 +4,19 @@ using HammAPI.Services;
 using HammAPI.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Adicionar a configuração do appsettings e verificar se as variaveis de ambiente sobrescrevem (para o docker)
+builder.Configuration
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables();
+
 // Adiciona o contexto do banco de dados ao contêiner de serviços
 builder.Services.AddDbContext<HammAPIDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"),
                       npgsqlOptions => npgsqlOptions.EnableRetryOnFailure())
 );
 
@@ -39,6 +45,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-DataPopulation.PopulateDb(app); 
+//Apenas popula o DB depois de realizar a migração do EF
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<HammAPIDbContext>();
+    db.Database.Migrate();
 
-app.Run();
+    DataPopulation.PopulateDb(app); 
+}
+
+// Abrindo no 0.0.0.0 porque faz o app acessível fora do container
+app.Run("http://0.0.0.0:80");

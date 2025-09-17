@@ -67,10 +67,10 @@ namespace HammAPI.Controllers
                 UsuarioId = dto.UsuarioId,
                 ValorObjetivo = dto.ValorObjetivo,
                 ValorAtual = dto.ValorAtual,
-                DataInicio = dto.DataInicio,
+                DataInicio = dto.DataInicio ?? DateTime.UtcNow,
                 DataAlvo = dto.DataAlvo,
                 Descricao = dto.Descricao,
-                Status = dto.Status
+                Status = dto.Status ?? "EmProgresso"
 
             };
             _context.Metas.Add(m);
@@ -82,10 +82,10 @@ namespace HammAPI.Controllers
                 UsuarioId = dto.UsuarioId,
                 ValorObjetivo = dto.ValorObjetivo,
                 ValorAtual = dto.ValorAtual,
-                DataInicio = dto.DataInicio,
+                DataInicio = dto.DataInicio ?? DateTime.UtcNow,
                 DataAlvo = dto.DataAlvo,
                 Descricao = dto.Descricao,
-                Status = dto.Status
+                Status = dto.Status ?? "EmProgresso"
             };
             return CreatedAtAction(nameof(Get), new { id = m.Id }, result);
         }

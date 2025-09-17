@@ -16,7 +16,6 @@ namespace HammAPI.Utils
                 {
                     var faker = new Faker("pt_BR");
 
-                    // ==== Criar Categorias ====
                     var categorias = new List<Categoria>
                     {
                         new Categoria { Id = Guid.NewGuid(), Nome = "Alimentação", Tipo = "Despesa", EPadrao = true },
@@ -38,7 +37,7 @@ namespace HammAPI.Utils
                         });
                     }
 
-                    // ==== Criar Usuários ====
+                    
                     var usuarios = new List<Usuario>();
                     for (int i = 0; i < 5; i++)
                     {
@@ -48,13 +47,13 @@ namespace HammAPI.Utils
                             PrimeiroNome = faker.Name.FirstName(),
                             UltimoNome = faker.Name.LastName(),
                             Email = faker.Internet.Email(),
-                            SenhaHash = "123" // nunca em produção! aqui é só dummy
+                            SenhaHash = "123" 
                         };
 
                         usuarios.Add(usuario);
                     }
 
-                    // ==== Criar Metas e Orçamentos para cada usuário ====
+                    // para cada usuario
                     var metas = new List<Meta>();
                     var orcamentos = new List<Orcamento>();
                     var transacoes = new List<Transacao>();
@@ -115,7 +114,7 @@ namespace HammAPI.Utils
                         }
                     }
 
-                    // ==== Salvar no banco ====
+                    // Salvar no banco
                     db.Categorias.AddRange(categorias);
                     db.Usuarios.AddRange(usuarios);
                     db.Metas.AddRange(metas);

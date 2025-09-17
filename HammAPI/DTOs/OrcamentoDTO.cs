@@ -15,10 +15,12 @@ namespace HammAPI.DTOs
 
         [Required]
         public string Nome { get; init; }
+        [Required]
 
-        public int? Mes { get; init; }
+        public int Mes { get; init; }
+        [Required]
 
-        public int? Ano { get; init; }
+        public int Ano { get; init; }
 
         public decimal? ValorUtilizado { get; init; }
 
@@ -32,13 +34,13 @@ namespace HammAPI.DTOs
         public decimal ValorLimite { get; init; }
 
         [Required]
-        public int? Mes { get; init; }
+        public int Mes { get; init; }
 
         [Required]
         public string Nome { get; init; }
 
         [Required]
-        public int? Ano { get; init; }
+        public int Ano { get; init; }
         public decimal? ValorUtilizado { get; init; }
     }
 
@@ -48,10 +50,10 @@ namespace HammAPI.DTOs
         public decimal ValorLimite { get; init; }
 
         [Required]
-        public int? Mes { get; init; }
+        public int Mes { get; init; }
 
         [Required]
-        public int? Ano { get; init; }
+        public int Ano { get; init; }
 
         [Required]
         public string Nome { get; init; }

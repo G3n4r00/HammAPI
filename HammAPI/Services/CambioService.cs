@@ -31,7 +31,7 @@ namespace HammAPI.Services
                 Moeda = cotacao.Moeda,
                 Nome = cotacao.Nome,
                 ValorEmReais = valorEmReais,
-                ValorConvertido = valorEmReais / cotacao.Compra, // usar taxa de compra
+                ValorConvertido = Math.Round((valorEmReais / cotacao.Compra), 3), // usar taxa de compra
                 TaxaCompra = cotacao.Compra,
                 DataAtualizacao = cotacao.DataAtualizacao
             };

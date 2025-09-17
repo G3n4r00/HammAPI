@@ -33,7 +33,7 @@ namespace HammAPI.Controllers
         public async Task<ActionResult<ConversaoResultadoDto>> Converter(
             string moeda, [FromQuery] decimal valor)
         {
-            var resultado = await _cambioService.ConverterAsync(moeda.ToUpper(), valor);
+            var resultado = await _cambioService.ConverterAsync(moeda.ToLower(), valor);
             if (resultado == null) return NotFound(new { message = "Moeda não encontrada." });
             return Ok(resultado);
         }

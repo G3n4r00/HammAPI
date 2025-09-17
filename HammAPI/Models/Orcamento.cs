@@ -25,11 +25,11 @@ namespace HammAPI.Models
 
         [Required]
         [Column("mes")]
-        public int? Mes { get; set; }
+        public string Mes { get; set; }
 
         [Required]
         [Column("ano")]
-        public int? Ano { get; set; }
+        public string Ano { get; set; }
 
         [Column("valor_utilizado", TypeName = "money")]
         public decimal? ValorUtilizado { get; set; }

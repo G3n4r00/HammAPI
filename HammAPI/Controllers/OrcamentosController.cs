@@ -25,8 +25,8 @@ namespace HammAPI.Controllers
                     UsuarioId = o.UsuarioId,
                     Nome = o.Nome,
                     ValorLimite = o.ValorLimite,                   
-                    Mes = o.Mes ?? 01, //AUSTAR AQUI
-                    Ano = o.Ano ?? 2025,// AJUSTAR AQUI
+                    Mes = o.Mes ?? DateTime.Now.ToString("MMMM"), 
+                    Ano = o.Ano ?? DateTime.Now.ToString("YYYY"),
                     ValorUtilizado = o.ValorUtilizado
                 })
                 .ToListAsync();
@@ -44,8 +44,8 @@ namespace HammAPI.Controllers
                 UsuarioId = o.UsuarioId,
                 Nome = o.Nome,
                 ValorLimite = o.ValorLimite,
-                Mes = o.Mes,
-                Ano = o.Ano,
+                Mes = o.Mes ?? DateTime.Now.ToString("MMMM"),
+                Ano = o.Ano ?? DateTime.Now.ToString("YYYY"),
                 ValorUtilizado = o.ValorUtilizado
             });
         }
@@ -61,8 +61,8 @@ namespace HammAPI.Controllers
                 UsuarioId = dto.UsuarioId,
                 Nome = dto.Nome,
                 ValorLimite = dto.ValorLimite,
-                Mes = dto.Mes,
-                Ano = dto.Ano,
+                Mes = dto.Mes ?? DateTime.Now.ToString("MMMM"),
+                Ano = dto.Ano ?? DateTime.Now.ToString("YYYY"),
                 ValorUtilizado = dto.ValorUtilizado
             };
 
@@ -75,8 +75,8 @@ namespace HammAPI.Controllers
                 UsuarioId = o.UsuarioId,
                 Nome = o.Nome,
                 ValorLimite = o.ValorLimite,
-                Mes = o.Mes,
-                Ano = o.Ano,
+                Mes = o.Mes ?? DateTime.Now.ToString("MMMM"),
+                Ano = o.Ano ?? DateTime.Now.ToString("YYYY"),
                 ValorUtilizado = o.ValorUtilizado
             };
             return CreatedAtAction(nameof(Get), new { id = o.Id }, result);

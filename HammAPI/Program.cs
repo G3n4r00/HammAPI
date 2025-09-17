@@ -54,5 +54,12 @@ using (var scope = app.Services.CreateScope())
     DataPopulation.PopulateDb(app); 
 }
 
-// Abrindo no 0.0.0.0 porque faz o app acessível fora do container
-app.Run("http://0.0.0.0:80");
+
+if (app.Environment.IsDevelopment())
+{
+    app.Run();
+}
+else
+{
+    app.Run("http://0.0.0.0:80");
+}

@@ -80,8 +80,8 @@ namespace HammAPI.Utils
                         // Orçamentos
                         for (int i = 0; i < 2; i++)
                         {
-                            var mes = faker.Date.Recent().Month;
-                            var ano = DateTime.Now.Year;
+                            var mes = faker.Date.Recent().Month.ToString();
+                            var ano = DateTime.Now.Year.ToString();
 
                             orcamentos.Add(new Orcamento
                             {

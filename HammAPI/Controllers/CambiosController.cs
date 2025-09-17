@@ -18,6 +18,7 @@ namespace HammAPI.Controllers
         /// <summary>
         /// Consulta a cotação atual de uma moeda (ARS, USD, EUR, CLP, UYU)
         /// </summary>
+        /// <param name="moeda">sigla da moeda alvo</param>
         [HttpGet("cotacao/{moeda}")]
         public async Task<ActionResult<CambioCotacaoDto>> GetCotacao(string moeda)
         {
@@ -29,6 +30,7 @@ namespace HammAPI.Controllers
         /// <summary>
         /// Converte um valor em reais para a moeda especificada
         /// </summary>
+        /// <param name="moeda">sigla da moeda alvo</param>
         [HttpGet("converter/{moeda}")]
         public async Task<ActionResult<ConversaoResultadoDto>> Converter(
             string moeda, [FromQuery] decimal valor)

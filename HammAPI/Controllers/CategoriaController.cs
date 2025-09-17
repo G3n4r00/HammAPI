@@ -14,6 +14,10 @@ namespace HammAPI.Controllers
         private readonly HammAPIDbContext _context;
         public CategoriasController(HammAPIDbContext context) => _context = context;
 
+        /// <summary>
+        /// Retorna todas as categorias cadastradas.
+        /// </summary>
+        /// <returns>Lista de categorias</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetAll()
         {
@@ -30,6 +34,11 @@ namespace HammAPI.Controllers
             return Ok(list);
         }
 
+        /// <summary>
+        /// Retorna uma categoria específica pelo seu identificador único.
+        /// </summary>
+        /// <param name="id">Identificador único da categoria.</param>
+        /// <returns>Objeto da categoria encontrada</returns>
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<CategoriaDTO>> Get(Guid id)
         {
@@ -44,6 +53,11 @@ namespace HammAPI.Controllers
             });
         }
 
+        /// <summary>
+        /// Cria uma nova categoria.
+        /// </summary>
+        /// <param name="dto">Dados necessários para criação da categoria.</param>
+        /// <returns>Objeto da categoria criada
         [HttpPost]
         public async Task<ActionResult<CategoriaDTO>> Create(CreateCategoriaDTO dto)
         {
@@ -59,6 +73,12 @@ namespace HammAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = c.Id }, new CategoriaDTO { Id = c.Id, Nome = c.Nome, Descricao = c.Descricao, Tipo = c.Tipo });
         }
 
+        /// <summary>
+        /// Atualiza os dados de uma categoria existente.
+        /// </summary>
+        /// <param name="id">Identificador único da categoria.</param>
+        /// <param name="dto">Dados atualizados da categoria.</param>
+        /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, UpdateCategoriaDTO dto)
         {
@@ -71,6 +91,11 @@ namespace HammAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Remove uma categoria existente.
+        /// </summary>
+        /// <param name="id">Identificador único da categoria.</param>
+        /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {

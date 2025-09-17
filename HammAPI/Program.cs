@@ -5,6 +5,7 @@ using HammAPI.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Reflection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,15 @@ builder.Services.AddSingleton<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>
 // Adiciona os Serviços controllers, de relatorio e de cotacao
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // Caminho do arquivo XML gerado pelo projeto
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+});
+
 builder.Services.AddScoped<RelatorioService>();
 builder.Services.AddHttpClient<CambioService>();
 
@@ -61,5 +70,6 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.Run("http://0.0.0.0:80");
+    app.Run("http://0.0.0.0:80"); //Fazendo isso o docker expoe os endpoints para a máquina local em http://localhost:5000/swagger/index.html
+
 }

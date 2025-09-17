@@ -15,6 +15,13 @@ namespace HammAPI.Controllers
             _relatoriosService = relatoriosService;
         }
 
+        /// <summary>
+        /// Gera um relatório financeiro para o usuário informado.
+        /// </summary>
+        /// <param name="usuarioId">ID do usuário</param>
+        /// <param name="mes">Mês de referência (opcional)</param>
+        /// <param name="ano">Ano de referência (opcional)</param>
+        /// <returns>Retorna o relatório em formato JSON no corpo da resposta</returns>
         [HttpGet("{usuarioId}")]
         public async Task<ActionResult<RelatorioDTO>> GerarRelatorio(
             Guid usuarioId, [FromQuery] int? mes, [FromQuery] int? ano)
@@ -23,6 +30,13 @@ namespace HammAPI.Controllers
             return Ok(relatorio);
         }
 
+        /// <summary>
+        /// Gera e baixa o relatório financeiro como arquivo JSON.
+        /// </summary>
+        /// <param name="usuarioId">ID do usuário</param>
+        /// <param name="mes">Mês de referência (opcional)</param>
+        /// <param name="ano">Ano de referência (opcional)</param>
+        /// <returns>Arquivo JSON para download</returns>
         [HttpGet("{usuarioId}/download")]
         public async Task<IActionResult> DownloadRelatorio(
         Guid usuarioId, [FromQuery] int? mes, [FromQuery] int? ano)

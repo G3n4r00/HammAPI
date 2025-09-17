@@ -12,6 +12,7 @@ namespace HammAPI.Services
             _httpClient.BaseAddress = new Uri("https://br.dolarapi.com/v1/cotacoes/");
         }
 
+        //retornar a cotacao da moeda especifica
         public async Task<CambioCotacaoDto?> ObterCotacaoAsync(string moeda)
         {
             var response = await _httpClient.GetAsync(moeda);
@@ -21,6 +22,7 @@ namespace HammAPI.Services
             return cotacao;
         }
 
+        //retornar a conversao de um valor em reais para uma moeda especificado
         public async Task<ConversaoResultadoDto?> ConverterAsync(string moeda, decimal valorEmReais)
         {
             var cotacao = await ObterCotacaoAsync(moeda);

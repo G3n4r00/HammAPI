@@ -14,6 +14,10 @@ namespace HammAPI.Controllers
         private readonly HammAPIDbContext _context;
         public MetasController(HammAPIDbContext context) => _context = context;
 
+        /// <summary>
+        /// Retorna todas as metas cadastradas.
+        /// </summary>
+        /// <returns>Lista de metas</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MetaDTO>>> GetAll()
         {
@@ -36,6 +40,11 @@ namespace HammAPI.Controllers
             return Ok(list);
         }
 
+        /// <summary>
+        /// Retorna uma meta específica pelo seu identificador único.
+        /// </summary>
+        /// <param name="id">Identificador único da meta.</param>
+        /// <returns>Objeto da meta encontrada</returns>
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<MetaDTO>> Get(Guid id)
         {
@@ -54,6 +63,12 @@ namespace HammAPI.Controllers
                 Status = m.Status
             });
         }
+
+        /// <summary>
+        /// Cria uma nova meta vinculada a um usuário.
+        /// </summary>
+        /// <param name="dto">Dados necessários para criação da meta.</param>
+        /// <returns>Objeto da meta criada
 
         [HttpPost]
         public async Task<ActionResult<MetaDTO>> Create(CreateMetaDTO dto)
@@ -90,6 +105,12 @@ namespace HammAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = m.Id }, result);
         }
 
+        /// <summary>
+        /// Atualiza os dados de uma meta existente.
+        /// </summary>
+        /// <param name="id">Identificador único da meta.</param>
+        /// <param name="dto">Dados atualizados da meta.</param>
+        /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, UpdateMetaDTO dto)
         {
@@ -105,6 +126,11 @@ namespace HammAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Remove uma meta existente.
+        /// </summary>
+        /// <param name="id">Identificador único da meta.</param>
+        /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {

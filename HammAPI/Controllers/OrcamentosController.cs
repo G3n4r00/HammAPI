@@ -7,6 +7,10 @@ using System;
 
 namespace HammAPI.Controllers
 {
+    /// <summary>
+    /// Controlador responsável pelo gerenciamento dos Orçamentos
+    /// Permite realizar operações de CRUD
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class OrcamentosController : ControllerBase
@@ -14,6 +18,10 @@ namespace HammAPI.Controllers
         private readonly HammAPIDbContext _context;
         public OrcamentosController(HammAPIDbContext context) => _context = context;
 
+        /// <summary>
+        /// Retorna todos os orçamentos cadastrados.
+        /// </summary>
+        /// <returns>Lista de orçamentos</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrcamentoDTO>>> GetAll()
         {
@@ -33,6 +41,11 @@ namespace HammAPI.Controllers
             return Ok(list);
         }
 
+        /// <summary>
+        /// Retorna um orçamento específico pelo seu ID.
+        /// </summary>
+        /// <param name="id">ID do orçamento</param>
+        /// <returns>Objeto de orçamento encontrado</returns>
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<OrcamentoDTO>> Get(Guid id)
         {
@@ -50,6 +63,11 @@ namespace HammAPI.Controllers
             });
         }
 
+        /// <summary>
+        /// Cria um novo orçamento.
+        /// </summary>
+        /// <param name="dto">Dados para criação do orçamento</param>
+        /// <returns>Objeto de orcamento criado</returns>
         [HttpPost]
         public async Task<ActionResult<OrcamentoDTO>> Create(CreateOrcamentoDTO dto)
         {
@@ -82,6 +100,12 @@ namespace HammAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = o.Id }, result);
         }
 
+        /// <summary>
+        /// Atualiza os dados de um orçamento existente.
+        /// </summary>
+        /// <param name="id">ID do orçamento</param>
+        /// <param name="dto">Dados para atualização</param>
+        /// <returns>Sem conteudo caso sucesso</returns>
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, UpdateOrcamentoDTO dto)
         {
@@ -98,6 +122,10 @@ namespace HammAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Remove um orçamento pelo ID.
+        /// </summary>
+        /// <param name="id">ID do orçamento</param>
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {

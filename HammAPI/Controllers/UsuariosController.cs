@@ -20,7 +20,12 @@ namespace HammAPI.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        //GET api/usuarios?pageNumber=1&pageSize=20
+        /// <summary>
+        /// Retorna todos os usuários com paginação.
+        /// </summary>
+        /// <param name="pageNumber">Número da página (padrão = 1)</param>
+        /// <param name="pageSize">Tamanho da página, máximo 100 (padrão = 20)</param>
+        /// <returns>Lista paginada de usuários</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsuarioDTO>>> GetAll(int pageNumber = 1, int pageSize = 20)
         {
@@ -38,7 +43,11 @@ namespace HammAPI.Controllers
         }
 
 
-        //GET api/usuarios/{id}
+        /// <summary>
+        /// Retorna um usuário pelo ID.
+        /// </summary>
+        /// <param name="id">ID do usuário</param>
+        /// <returns>Objeto do usuário encontrado</returns>
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<UsuarioDTO>> Get(Guid id)
         {
@@ -49,8 +58,11 @@ namespace HammAPI.Controllers
         }
 
 
-        //POST api/usuarios
-
+        /// <summary>
+        /// Cria um novo usuário.
+        /// </summary>
+        /// <param name="dto">Dados para criação do usuário</param>
+        /// <returns>Usuário criado</returns>
         [HttpPost]
         public async Task<ActionResult<UsuarioDTO>> Create([FromBody] CreateUsuarioDTO dto)
         {
@@ -82,7 +94,12 @@ namespace HammAPI.Controllers
 
         }
 
-        //PUT api/usuarios/{id}
+        /// <summary>
+        /// Atualiza os dados de um usuário existente.
+        /// </summary>
+        /// <param name="id">ID do usuário</param>
+        /// <param name="dto">Dados atualizados</param>
+        /// <returns>Sem conteúdo caso sucesso</returns>
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUsuarioDTO dto)
         {
@@ -120,9 +137,11 @@ namespace HammAPI.Controllers
         }
 
 
-
-        //Implementar o Hard delete e soft delete depois, dois endpoints diferentes
-        //DELETE api/usuarios/{id}
+        /// <summary>
+        /// Remove um usuário pelo ID (hard delete).
+        /// </summary>
+        /// <param name="id">ID do usuário</param>
+        /// <returns>Sem conteúdo caso sucesso</returns>
         [HttpDelete("{id:guid}")]
         public async Task <ActionResult> Delete(Guid id)
         {

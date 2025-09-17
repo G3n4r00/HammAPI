@@ -18,6 +18,12 @@ namespace HammAPI.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Retorna todas as transações com paginação.
+        /// </summary>
+        /// <param name="pageNumber">Número da página (padrão = 1)</param>
+        /// <param name="pageSize">Tamanho da página, máximo 100 (padrão = 20)</param>
+        /// <returns>Lista paginada de transações</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TransacaoDTO>>> GetAll(int pageNumber = 1, int pageSize = 20)
         {
@@ -45,6 +51,11 @@ namespace HammAPI.Controllers
             return Ok(list);
         }
 
+        /// <summary>
+        /// Retorna uma transação pelo seu ID.
+        /// </summary>
+        /// <param name="id">ID da transação</param>
+        /// <returns>Objeto da transação encontrada</returns>
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<TransacaoDTO>> Get(Guid id)
         {
@@ -63,6 +74,11 @@ namespace HammAPI.Controllers
             });
         }
 
+        /// <summary>
+        /// Cria uma nova transação.
+        /// </summary>
+        /// <param name="dto">Dados da transação a ser criada</param>
+        /// <returns>Objeto da transação criada</returns>
         [HttpPost]
         public async Task<ActionResult<TransacaoDTO>> Create(CreateTransacaoDTO dto)
         {
@@ -103,6 +119,12 @@ namespace HammAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = t.Id }, result);
         }
 
+        /// <summary>
+        /// Atualiza uma transação existente.
+        /// </summary>
+        /// <param name="id">ID da transação</param>
+        /// <param name="dto">Dados da transação a serem atualizados</param>
+        /// <returns>Sem conteúdo caso sucesso</returns>
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, UpdateTransacaoDTO dto)
         {
@@ -123,6 +145,11 @@ namespace HammAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Remove uma transação pelo ID.
+        /// </summary>
+        /// <param name="id">ID da transação</param>
+        /// <returns>Sem conteúdo caso sucesso</returns>
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {

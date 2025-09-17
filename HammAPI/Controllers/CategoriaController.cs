@@ -99,6 +99,9 @@ namespace HammAPI.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var categoriaPadrao = await _context.Categorias.AnyAsync(c => c.EPadrao == false);
+            if (!categoriaPadrao) return BadRequest(new { message = "Categorias padrão não podem ser deletadas." });
+
             var c = await _context.Categorias.FindAsync(id);
             if (c == null) return NotFound();
             _context.Categorias.Remove(c);

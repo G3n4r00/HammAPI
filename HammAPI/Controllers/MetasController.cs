@@ -134,6 +134,7 @@ namespace HammAPI.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+
             var m = await _context.Metas.FindAsync(id);
             if (m == null) return NotFound();
             _context.Metas.Remove(m);

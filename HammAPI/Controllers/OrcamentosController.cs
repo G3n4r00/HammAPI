@@ -25,6 +25,7 @@ namespace HammAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrcamentoDTO>>> GetAll()
         {
+
             var list = await _context.Orcamentos
                 .AsNoTracking()
                 .Select(o => new OrcamentoDTO
@@ -73,6 +74,7 @@ namespace HammAPI.Controllers
         {
             var userExists = await _context.Usuarios.AnyAsync(u => u.Id == dto.UsuarioId);
             if (!userExists) return BadRequest(new { message = "Usuário não encontrado." });
+            if (dto.ValorLimite <= 0) return BadRequest(new { message = "Valor deve ser maior que zero." });
 
             var o = new Orcamento
             {
@@ -111,6 +113,7 @@ namespace HammAPI.Controllers
         {
             var o = await _context.Orcamentos.FirstOrDefaultAsync(x => x.Id == id);
             if (o == null) return NotFound();
+            if (dto.ValorLimite <= 0) return BadRequest(new { message = "Valor deve ser maior que zero." });
 
             o.Nome = dto.Nome;
             o.ValorLimite = dto.ValorLimite;

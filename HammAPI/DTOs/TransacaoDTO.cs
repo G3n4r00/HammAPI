@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HammAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace HammAPI.DTOs
 {
@@ -11,7 +12,7 @@ namespace HammAPI.DTOs
         public string? Descricao { get; init; }
         public Guid CategoriaId { get; init; }
         public string? Tipo { get; init; } // Receita ou Despesa
-        public string? MetodoPagamento { get; init; }    
+        public MetodoPagamento? MetodoPagamento { get; init; }    
     }
 
     public record UpdateTransacaoDTO
@@ -31,7 +32,7 @@ namespace HammAPI.DTOs
         [Required]
         public string Tipo { get; set; } // Receita ou Despesa
 
-        public string MetodoPagamento { get; set; }
+        public MetodoPagamento? MetodoPagamento { get; set; }
     }
 
     public record CreateTransacaoDTO
@@ -54,6 +55,6 @@ namespace HammAPI.DTOs
         [Required]
         public string Tipo { get; set; } // Receita ou Despesa
 
-        public string MetodoPagamento { get; set; }
+        public MetodoPagamento? MetodoPagamento { get; set; }
     }
 }

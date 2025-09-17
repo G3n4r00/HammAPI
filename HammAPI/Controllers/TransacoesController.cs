@@ -86,9 +86,13 @@ namespace HammAPI.Controllers
 
             // checar usuário existe
             var userExists = await _context.Usuarios.AnyAsync(u => u.Id == dto.UsuarioId);
-            if (!userExists) return BadRequest(new { message = "Usuário não encontrado." });
+            var categoriaExists = await _context.Categorias.AnyAsync(c => c.Id == dto.CategoriaId);
 
-            if (dto.Valor == 0) return BadRequest(new { message = "Valor não pode ser zero." });
+            if (!userExists) return BadRequest(new { message = "Usuário não encontrado." });
+            if (!categoriaExists) return BadRequest(new { message = "Categoria não encontrada." });
+
+            if (dto.Valor <= 0) return BadRequest(new { message = "Valor deve ser maior que zero." });
+            if (dto.Data > DateTime.UtcNow.Date) return BadRequest(new { message = "Data de transação não pode ser no futuro" });
 
             var t = new Transacao
             {
@@ -129,6 +133,13 @@ namespace HammAPI.Controllers
         public async Task<IActionResult> Update(Guid id, UpdateTransacaoDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var categoriaExists = await _context.Categorias.AnyAsync(c => c.Id == dto.CategoriaId);
+
+            if (!categoriaExists) return BadRequest(new { message = "Categoria não encontrada." });
+
+            if (dto.Valor <= 0) return BadRequest(new { message = "Valor deve ser maior que zero." });
+            if (dto.Data > DateTime.UtcNow.Date) return BadRequest(new { message = "Data de transação não pode ser no futuro" });
 
             var t = await _context.Transacoes.FirstOrDefaultAsync(x => x.Id == id);
             if (t == null) return NotFound();

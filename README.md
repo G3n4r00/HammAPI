@@ -1,9 +1,10 @@
-# 💰 Hamm API
 
-### Gerenciador de Finanças Pessoais
+<h1 align="center">💰 Hamm API</h1>
+
+<h2 align="center">Gerenciador de Finanças Pessoais</h2>
 
 <p align="center">
-    <img width="720" height="720" alt="HammAPI" src="https://github.com/user-attachments/assets/17856f95-ca34-4763-b619-8e19e1199f54" />
+    <img width="612" height="612" alt="HammAPI" src="https://github.com/user-attachments/assets/17856f95-ca34-4763-b619-8e19e1199f54" />
 </p>
 
 ---

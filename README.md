@@ -2,31 +2,32 @@
 
 ### Gerenciador de Finanças Pessoais
 
-![image](https://github.com/user-attachments/assets/4938f870-99a1-454f-871f-5a82d8bb7f26)
+<img width="1024" height="1024" alt="HammAPI" src="https://github.com/user-attachments/assets/17856f95-ca34-4763-b619-8e19e1199f54" />
+
 
 ---
 
 ## 📄 Descrição do Projeto
 
-A **Hamm API** é uma aplicação desenvolvida em ASP.NET Core Web API com Entity Framework Core. [cite_start]Seu principal objetivo é atuar como o motor de um sistema de gestão financeira pessoal, centralizando e organizando informações de forma segura[cite: 6, 7].
+A **Hamm API** é uma aplicação desenvolvida em ASP.NET Core Web API com Entity Framework Core. [cite_start]Seu principal objetivo é atuar como o motor de um sistema de gestão financeira pessoal, centralizando e organizando informações de forma segura.
 
 Ela é responsável por gerenciar:
 
-* [cite_start]**Gastos pessoais** [cite: 8]
-* [cite_start]**Metas financeiras** [cite: 9]
-* [cite_start]**Orçamentos mensais (Budgets)** [cite: 10]
-* [cite_start]**Relatórios consolidados** [cite: 11]
+* **Gastos pessoais** 
+* **Metas financeiras** 
+* **Orçamentos mensais (Budgets)**
+* **Relatórios consolidados** 
 
 [cite_start]A API atua como ponto central de comunicação entre um aplicativo cliente (como um app mobile) e o banco de dados, garantindo que todas as operações de cadastro, consulta, atualização e exclusão sejam consistentes[cite: 12].
 
 Além disso, a Hamm API implementa a lógica de negócios para:
 
-* [cite_start]Processar e integrar dados financeiros[cite: 14].
-* [cite_start]Gerar relatórios em formato JSON[cite: 15].
-* [cite_start]Executar consultas avançadas usando LINQ[cite: 16].
-* [cite_start]Integrar informações externas, como taxas de câmbio em tempo real, via APIs públicas[cite: 17].
+* Processar e integrar dados financeiros.
+* Gerar relatórios em formato JSON.
+* Executar consultas avançadas usando LINQ.
+* Integrar informações externas, como taxas de câmbio em tempo real, via API públicas.
 
-[cite_start]O projeto foi concebido para ser uma solução modular e extensível, com potencial para se tornar um sistema completo de gestão financeira com interfaces mobile ou web, mantendo a API como núcleo central[cite: 18].
+O projeto foi concebido para ser uma solução modular e extensível, com potencial para se tornar um sistema completo de gestão financeira com interfaces mobile ou web, mantendo a API como núcleo central.
 
 ---
 
@@ -44,7 +45,8 @@ O diagrama a seguir representa a arquitetura de componentes do sistema, mostrand
 
 Este diagrama detalha as entidades e seus relacionamentos no banco de dados.
 
-![Diagrama de Entidades da Hamm API](https://github.com/user-attachments/assets/39f470db-617c-4056-9acf-1c75385199d5)
+<img width="712" height="477" alt="hammapi - public" src="https://github.com/user-attachments/assets/4d99e054-2651-412f-bf88-479eab7a335f" />
+
 
 ---
 

@@ -2,8 +2,9 @@
 
 ### Gerenciador de Finanças Pessoais
 
-<img width="1024" height="1024" alt="HammAPI" src="https://github.com/user-attachments/assets/17856f95-ca34-4763-b619-8e19e1199f54" />
-
+<p align="center">
+    <img width="720" height="720" alt="HammAPI" src="https://github.com/user-attachments/assets/17856f95-ca34-4763-b619-8e19e1199f54" />
+</p>
 
 ---
 
@@ -45,7 +46,9 @@ O diagrama a seguir representa a arquitetura de componentes do sistema, mostrand
 
 Este diagrama detalha as entidades e seus relacionamentos no banco de dados.
 
-<img width="712" height="477" alt="hammapi - public" src="https://github.com/user-attachments/assets/4d99e054-2651-412f-bf88-479eab7a335f" />
+<p align="center">
+    <img width="712" height="477" alt="hammapi - public" src="https://github.com/user-attachments/assets/4d99e054-2651-412f-bf88-479eab7a335f" />
+</p>
 
 
 ---

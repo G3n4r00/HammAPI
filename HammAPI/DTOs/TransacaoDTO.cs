@@ -5,14 +5,20 @@ namespace HammAPI.DTOs
 {
     public record TransacaoDTO
     {
+        [Required]
         public Guid Id { get; init; }
+        [Required]
         public Guid UsuarioId { get; init; }
+        [Required]
         public decimal Valor { get; init; }
+        [Required]
         public DateTime Data { get; init; }
         public string? Descricao { get; init; }
+        [Required]
         public Guid CategoriaId { get; init; }
         public string? Tipo { get; init; } // Receita ou Despesa
-        public MetodoPagamento? MetodoPagamento { get; init; }    
+        [Required]
+        public string MetodoPagamento { get; init; }    
     }
 
     public record UpdateTransacaoDTO
@@ -32,7 +38,7 @@ namespace HammAPI.DTOs
         [Required]
         public string Tipo { get; set; } // Receita ou Despesa
 
-        public MetodoPagamento? MetodoPagamento { get; set; }
+        public string MetodoPagamento { get; set; }
     }
 
     public record CreateTransacaoDTO
@@ -54,7 +60,8 @@ namespace HammAPI.DTOs
 
         [Required]
         public string Tipo { get; set; } // Receita ou Despesa
+        [Required]
 
-        public MetodoPagamento? MetodoPagamento { get; set; }
+        public string MetodoPagamento { get; set; }
     }
 }

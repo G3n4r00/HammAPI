@@ -32,8 +32,9 @@
         [Column("tipo")]
         public string Tipo { get; set; } // Receita ou Despesa
 
+        [Required]
         [Column("metodo_pagamento")]
-        public MetodoPagamento? MetodoPagamento { get; set; }
+        public string MetodoPagamento { get; set; }
 
         // Navegação
         [ForeignKey("UsuarioId")]
@@ -43,9 +44,4 @@
         public Categoria Categoria { get; set; }
     }
 
-    public enum MetodoPagamento
-    {
-        Credito,
-        Debito
-    }
 }

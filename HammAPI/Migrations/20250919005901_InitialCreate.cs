@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HammAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,8 @@ namespace HammAPI.Migrations
                     id_categoria = table.Column<Guid>(type: "uuid", nullable: false),
                     nome = table.Column<string>(type: "text", nullable: false),
                     tipo = table.Column<string>(type: "text", nullable: false),
-                    e_padrao = table.Column<bool>(type: "boolean", nullable: false)
+                    e_padrao = table.Column<bool>(type: "boolean", nullable: false),
+                    descricao = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,10 +54,12 @@ namespace HammAPI.Migrations
                     id_meta = table.Column<Guid>(type: "uuid", nullable: false),
                     id_usuario = table.Column<Guid>(type: "uuid", nullable: false),
                     nome = table.Column<string>(type: "text", nullable: false),
-                    valor_objetivo = table.Column<decimal>(type: "money", nullable: true),
+                    valor_objetivo = table.Column<decimal>(type: "money", nullable: false),
                     valor_atual = table.Column<decimal>(type: "money", nullable: true),
-                    dia_prazo = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    status = table.Column<string>(type: "text", nullable: false)
+                    data_inicio = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    dia_prazo = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    descricao = table.Column<string>(type: "text", nullable: true),
+                    status = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,9 +80,10 @@ namespace HammAPI.Migrations
                 {
                     id_orcamento = table.Column<Guid>(type: "uuid", nullable: false),
                     id_usuario = table.Column<Guid>(type: "uuid", nullable: false),
-                    valor_limite = table.Column<decimal>(type: "money", nullable: true),
-                    mes = table.Column<int>(type: "integer", nullable: true),
-                    ano = table.Column<int>(type: "integer", nullable: true),
+                    nome = table.Column<string>(type: "text", nullable: false),
+                    valor_limite = table.Column<decimal>(type: "money", nullable: false),
+                    mes = table.Column<string>(type: "text", nullable: false),
+                    ano = table.Column<string>(type: "text", nullable: false),
                     valor_utilizado = table.Column<decimal>(type: "money", nullable: true)
                 },
                 constraints: table =>

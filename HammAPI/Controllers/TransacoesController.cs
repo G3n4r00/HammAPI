@@ -84,7 +84,7 @@ namespace HammAPI.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            // checar usuário existe
+            // checar usuário e categoria existem
             var userExists = await _context.Usuarios.AnyAsync(u => u.Id == dto.UsuarioId);
             var categoriaExists = await _context.Categorias.AnyAsync(c => c.Id == dto.CategoriaId);
 
@@ -93,6 +93,8 @@ namespace HammAPI.Controllers
 
             if (dto.Valor <= 0) return BadRequest(new { message = "Valor deve ser maior que zero." });
             if (dto.Data > DateTime.UtcNow.Date) return BadRequest(new { message = "Data de transação não pode ser no futuro" });
+            dto.MetodoPagamento = dto.MetodoPagamento.ToUpper();
+            if (dto.MetodoPagamento != "CREDITO" || dto.MetodoPagamento != "DEBITO") return BadRequest(new { message = "O metodo de pagamento deve ser 'CREDITO' ou 'DEBITO'" });
 
             var t = new Transacao
             {
@@ -140,6 +142,9 @@ namespace HammAPI.Controllers
 
             if (dto.Valor <= 0) return BadRequest(new { message = "Valor deve ser maior que zero." });
             if (dto.Data > DateTime.UtcNow.Date) return BadRequest(new { message = "Data de transação não pode ser no futuro" });
+
+            dto.MetodoPagamento = dto.MetodoPagamento.ToUpper();
+            if (dto.MetodoPagamento != "CREDITO" || dto.MetodoPagamento != "DEBITO") return BadRequest(new { message = "O metodo de pagamento deve ser 'CREDITO' ou 'DEBITO'" });
 
             var t = await _context.Transacoes.FirstOrDefaultAsync(x => x.Id == id);
             if (t == null) return NotFound();

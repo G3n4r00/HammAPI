@@ -19,6 +19,7 @@ namespace HammAPI.Data
             
             modelBuilder.Entity<Transacao>().Property(t => t.Valor).HasColumnType("decimal(18,2)");
 
+
             base.OnModelCreating(modelBuilder);
         }
     }

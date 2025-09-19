@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HammAPI.Migrations
 {
     [DbContext(typeof(HammAPIDbContext))]
-    [Migration("20250915034420_Initial")]
-    partial class Initial
+    [Migration("20250919005901_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,10 @@ namespace HammAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id_categoria");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("text")
+                        .HasColumnName("descricao");
 
                     b.Property<bool>("EPadrao")
                         .HasColumnType("boolean")
@@ -58,9 +62,17 @@ namespace HammAPI.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id_meta");
 
-                    b.Property<DateTime?>("DiaPrazo")
+                    b.Property<DateTime>("DataAlvo")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("dia_prazo");
+
+                    b.Property<DateTime?>("DataInicio")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_inicio");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("text")
+                        .HasColumnName("descricao");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -68,7 +80,6 @@ namespace HammAPI.Migrations
                         .HasColumnName("nome");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("status");
 
@@ -80,7 +91,7 @@ namespace HammAPI.Migrations
                         .HasColumnType("money")
                         .HasColumnName("valor_atual");
 
-                    b.Property<decimal?>("ValorObjetivo")
+                    b.Property<decimal>("ValorObjetivo")
                         .HasColumnType("money")
                         .HasColumnName("valor_objetivo");
 
@@ -98,19 +109,26 @@ namespace HammAPI.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id_orcamento");
 
-                    b.Property<int?>("Ano")
-                        .HasColumnType("integer")
+                    b.Property<string>("Ano")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("ano");
 
-                    b.Property<int?>("Mes")
-                        .HasColumnType("integer")
+                    b.Property<string>("Mes")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("mes");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("nome");
 
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uuid")
                         .HasColumnName("id_usuario");
 
-                    b.Property<decimal?>("ValorLimite")
+                    b.Property<decimal>("ValorLimite")
                         .HasColumnType("money")
                         .HasColumnName("valor_limite");
 

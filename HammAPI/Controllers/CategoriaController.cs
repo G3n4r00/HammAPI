@@ -57,7 +57,7 @@ namespace HammAPI.Controllers
         /// Cria uma nova categoria.
         /// </summary>
         /// <param name="dto">Dados necessários para criação da categoria.</param>
-        /// <returns>Objeto da categoria criada
+        /// <returns>Objeto da categoria criada</returns>
         [HttpPost]
         public async Task<ActionResult<CategoriaDTO>> Create(CreateCategoriaDTO dto)
         {

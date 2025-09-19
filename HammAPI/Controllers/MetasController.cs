@@ -68,7 +68,7 @@ namespace HammAPI.Controllers
         /// Cria uma nova meta vinculada a um usuário.
         /// </summary>
         /// <param name="dto">Dados necessários para criação da meta.</param>
-        /// <returns>Objeto da meta criada
+        /// <returns>Objeto da meta criada</returns>
 
         [HttpPost]
         public async Task<ActionResult<MetaDTO>> Create(CreateMetaDTO dto)

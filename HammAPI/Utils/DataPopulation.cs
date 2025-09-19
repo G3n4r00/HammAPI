@@ -109,7 +109,7 @@ namespace HammAPI.Utils
                                 Data = DateTime.SpecifyKind(faker.Date.Recent(90), DateTimeKind.Utc),
                                 Descricao = faker.Commerce.ProductName(),
                                 Tipo = categoria.Tipo,
-                                MetodoPagamento = faker.PickRandom(new[] { "Pix", "Cartão", "Dinheiro", "Transferência" })
+                                MetodoPagamento = faker.PickRandom(new[] { "CREDITO", "DEBITO" })
                             });
                         }
                     }

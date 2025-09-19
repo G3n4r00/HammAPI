@@ -11,7 +11,7 @@
 
 ## 📄 Descrição do Projeto
 
-A **Hamm API** é uma aplicação desenvolvida em ASP.NET Core Web API com Entity Framework Core. [cite_start]Seu principal objetivo é atuar como o motor de um sistema de gestão financeira pessoal, centralizando e organizando informações de forma segura.
+A **Hamm API** é uma aplicação desenvolvida em ASP.NET Core Web API com Entity Framework Core. Seu principal objetivo é atuar como o motor de um sistema de gestão financeira pessoal, centralizando e organizando informações de forma segura.
 
 Ela é responsável por gerenciar:
 
@@ -20,7 +20,7 @@ Ela é responsável por gerenciar:
 * **Orçamentos mensais (Budgets)**
 * **Relatórios consolidados** 
 
-[cite_start]A API atua como ponto central de comunicação entre um aplicativo cliente (como um app mobile) e o banco de dados, garantindo que todas as operações de cadastro, consulta, atualização e exclusão sejam consistentes[cite: 12].
+A API atua como ponto central de comunicação entre um aplicativo cliente e o banco de dados, garantindo que todas as operações de cadastro, consulta, atualização e exclusão sejam consistentes.
 
 Além disso, a Hamm API implementa a lógica de negócios para:
 

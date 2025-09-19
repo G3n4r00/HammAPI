@@ -71,8 +71,8 @@ Certifique-se de que as seguintes ferramentas estão instaladas em seu ambiente:
     Abra o terminal e execute os seguintes comandos:
 
     ```bash
-    git clone <URL_DO_REPOSITORIO>
-    cd <PASTA_DO_PROJETO>
+    git clone https://github.com/G3n4r00/HammAPI.git
+    cd HammAPI
     ```
 
 2.  **Configurar variáveis de ambiente**
@@ -95,7 +95,7 @@ Certifique-se de que as seguintes ferramentas estão instaladas em seu ambiente:
 
 4.  **Acessar a API**
 
-    A API estará disponível em `http://localhost:5000`. O **Swagger UI** para testar os endpoints estará em `http://localhost:5000/swagger`.
+    A API estará disponível em `http://localhost:5000`. O **Swagger UI** para testar os endpoints estará em `http://localhost:5000/swagger/index.html`.
 
     ⚠️ **Atenção**: Se você alterar a porta no `docker-compose.yml`, lembre-se de atualizar o endereço.
 

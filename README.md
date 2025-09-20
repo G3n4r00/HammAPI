@@ -118,3 +118,39 @@ Certifique-se de que as seguintes ferramentas estão instaladas em seu ambiente:
     ```bash
     docker-compose logs -f api
     ```
+
+---
+
+## Integrantes
+<table>
+  <tr>
+    <th>Nome</th>
+    <th>RM</th>
+    <th>Turma</th>
+  </tr>
+  <tr>
+    <td>Arthur Baldissera Claumann Marcos</td>
+    <td>550219</td>
+    <td>3ESPF</td>
+  </tr>
+  <tr>
+    <td>Gabriel Genaro Dalaqua</td>
+    <td>551986</td>
+    <td>3ESPF</td>
+  </tr>
+  <tr>
+    <td>Paloma Mirela dos Santos Rodrigues</td>
+    <td>551321</td>
+    <td>3ESPF</td>
+  </tr>
+  <tr>
+    <td>Ricardo Ramos Vergani</td>
+    <td>550166</td>
+    <td>3ESPF</td>
+  </tr>
+  <tr>
+    <td>Victor Kenzo Toma</td>
+    <td>551649</td>
+    <td>3ESPF</td>
+  </tr>
+</table>

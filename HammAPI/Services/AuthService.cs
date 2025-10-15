@@ -6,10 +6,8 @@ using System.Text;
 
 namespace HammAPI.Services
 {
-
     public class AuthService : IAuthService
     {
-        private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
         private readonly string _issuer;
         private readonly string _audience;
@@ -17,31 +15,37 @@ namespace HammAPI.Services
 
         public AuthService(IConfiguration config)
         {
-            _config = config;
-            var jwt = _config.GetSection("Jwt");
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]));
-            _issuer = jwt["Issuer"];
-            _audience = jwt["Audience"];
-            _expiryMinutes = int.Parse(jwt["ExpiryMinutes"]);
+            var jwt = config.GetSection("Jwt");
+
+            var key = jwt["Key"];
+            var issuer = jwt["Issuer"];
+            var audience = jwt["Audience"];
+            var expiry = jwt["ExpiryMinutes"];
+
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            _issuer = issuer;
+            _audience = audience;
+            _expiryMinutes = int.Parse(expiry ?? "60");
         }
 
         public string GenerateJwtToken(Usuario user)
         {
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("firstName", user.PrimeiroNome ?? ""),
-            new Claim("lastName", user.UltimoNome ?? "")
-        };
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+                new Claim("firstName", user.PrimeiroNome ?? ""),
+                new Claim("lastName", user.UltimoNome ?? "")
+            };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
+            var expiration = DateTime.UtcNow.AddMinutes(_expiryMinutes);
 
             var token = new JwtSecurityToken(
                 issuer: _issuer,
                 audience: _audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_expiryMinutes),
+                expires: expiration,
                 signingCredentials: creds
             );
 

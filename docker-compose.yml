@@ -9,6 +9,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Default=Host=db;Port=5432;Database=hammapi;Username=postgres;Password=postgres
+      - Jwt__Key=z11LWRkZo13VR9PD2LTAcUs3BlnTKEXgdqItPQLU9AM=
+      - Jwt__Issuer=HammAPI
+      - Jwt__Audience=HammAPIClients
+      - Jwt__ExpiryMinutes=120
     depends_on:
       - db
 

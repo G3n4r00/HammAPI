@@ -6,56 +6,52 @@ using HammAPI.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-// Adicionar a configuração do appsettings e verificar se as variaveis de ambiente sobrescrevem (para o docker)
+// ConfiguraÃ§Ã£o do appsettings e variÃ¡veis de ambiente
 builder.Configuration
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables();
 
-// Adiciona o contexto do banco de dados ao contêiner de serviços
+// ConfiguraÃ§Ã£o do banco de dados
 builder.Services.AddDbContext<HammAPIDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default"),
                       npgsqlOptions => npgsqlOptions.EnableRetryOnFailure())
 );
 
-// Adicionar o serviço para gerar e manipular os hashes de senhas
+// ServiÃ§os de senha
 builder.Services.AddSingleton<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 
-// --- JWT CONFIG ------------------------------------------------------------
+// JWT
 var jwtSection = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSection["Key"];
 var jwtIssuer = jwtSection["Issuer"];
 var jwtAudience = jwtSection["Audience"];
 var jwtExpiry = jwtSection["ExpiryMinutes"];
 
-
-// Adiciona os Serviços controllers, de relatorio e de cotacao
-
+// ServiÃ§os da aplicaÃ§Ã£o
 builder.Services.AddScoped<IAuthService, AuthService>();          
 builder.Services.AddScoped<IUserRepository, UserRepository>();     
 builder.Services.AddScoped<RelatorioService>();
 builder.Services.AddHttpClient<CambioService>();
+
+// Controllers e JSON
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        options.JsonSerializerOptions.PropertyNamingPolicy = null; // mantém nomes como estão
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
 
-
-// Configuração do Swagger 
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    // Caminho do arquivo XML gerado pelo projeto (se existir)
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     if (File.Exists(xmlPath))
@@ -63,24 +59,33 @@ builder.Services.AddSwaggerGen(c =>
         c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
     }
 
-    // Definição de segurança Bearer
-    var securityScheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    var securityScheme = new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Insira 'Bearer {seu token}' para autenticar."
+        In = ParameterLocation.Header,
+        Description = "Insira seu token para autenticar."
     };
     c.AddSecurityDefinition("Bearer", securityScheme);
-    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
-        { securityScheme, Array.Empty<string>() }
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
     });
 });
 
-// Configuração da Autenticação com o JWT Bearer
+// AutenticaÃ§Ã£o JWT
 if (!string.IsNullOrWhiteSpace(jwtKey))
 {
     var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
@@ -92,7 +97,6 @@ if (!string.IsNullOrWhiteSpace(jwtKey))
     })
     .AddJwtBearer(options =>
     {
-        // permitir http em desenvolvimento para facilitar testes locais (docker)
         options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
@@ -110,39 +114,36 @@ if (!string.IsNullOrWhiteSpace(jwtKey))
 }
 else
 {
-    // Se não houver chave, adiciona autenticação "dummy" para não quebrar startup; 
-    // porém endpoints protegidos irão falhar quando chamados
     builder.Services.AddAuthentication();
 }
 
 var app = builder.Build();
 
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-if (!app.Environment.IsDevelopment())
+else
 {
     app.UseHttpsRedirection();
 }
 
-// Autenticação deve vir ANTES de Authorization
+// AutenticaÃ§Ã£o e autorizaÃ§Ã£o
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Mapear controllers
 app.MapControllers();
 
-//Apenas popula o DB depois de realizar a migração do EF
+// Popula DB apÃ³s migraÃ§Ã£o
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<HammAPIDbContext>();
     db.Database.Migrate();
 
-    DataPopulation.PopulateDb(app); 
+    DataPopulation.PopulateDb(app);
 }
 
-
-app.Run(); // acessar http://localhost:5000/swagger/index.html quando no docker
-
+app.Run();

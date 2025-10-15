@@ -3,12 +3,15 @@ using HammAPI.DTOs;
 using HammAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using System;
 
 namespace HammAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CategoriasController : ControllerBase
     {
         private readonly HammAPIDbContext _context;
@@ -21,16 +24,22 @@ namespace HammAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetAll()
         {
+            var usuarioIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var usuarioId = Guid.Parse(usuarioIdStr);
+
             var list = await _context.Categorias
                 .AsNoTracking()
-                .Select(c => new CategoriaDTO { 
-                    Id = c.Id, 
-                    Nome = c.Nome, 
+                .Where(c => c.EPadrao || c.UsuarioId == usuarioId)
+                .Select(c => new CategoriaDTO
+                {
+                    Id = c.Id,
+                    Nome = c.Nome,
                     Descricao = c.Descricao,
                     Tipo = c.Tipo,
                     EPadrao = c.EPadrao
                 })
                 .ToListAsync();
+
             return Ok(list);
         }
 
@@ -40,11 +49,19 @@ namespace HammAPI.Controllers
         /// <param name="id">Identificador único da categoria.</param>
         /// <returns>Objeto da categoria encontrada</returns>
         [HttpGet("{id:guid}")]
+        [Authorize]
         public async Task<ActionResult<CategoriaDTO>> Get(Guid id)
         {
-            var c = await _context.Categorias.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var userId = Guid.Parse(User.FindFirst("id")?.Value);
+
+            var c = await _context.Categorias
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id && (x.EPadrao || x.UsuarioId == userId));
+
             if (c == null) return NotFound();
-            return Ok(new CategoriaDTO {
+
+            return Ok(new CategoriaDTO
+            {
                 Id = c.Id,
                 Nome = c.Nome,
                 Descricao = c.Descricao,
@@ -61,16 +78,23 @@ namespace HammAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CategoriaDTO>> Create(CreateCategoriaDTO dto)
         {
-            var c = new Categoria { 
+            var usuarioIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var usuarioId = Guid.Parse(usuarioIdStr);
+
+            var c = new Categoria
+            {
                 Nome = dto.Nome,
                 EPadrao = false,
                 Tipo = dto.Tipo,
-                Descricao = dto.Descricao 
+                Descricao = dto.Descricao,
+                UsuarioId = usuarioId
             };
 
             _context.Categorias.Add(c);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = c.Id }, new CategoriaDTO { Id = c.Id, Nome = c.Nome, Descricao = c.Descricao, Tipo = c.Tipo });
+
+            return CreatedAtAction(nameof(Get), new { id = c.Id },
+                new CategoriaDTO { Id = c.Id, Nome = c.Nome, Descricao = c.Descricao, Tipo = c.Tipo, EPadrao = c.EPadrao });
         }
 
         /// <summary>
@@ -82,11 +106,18 @@ namespace HammAPI.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, UpdateCategoriaDTO dto)
         {
-            var c = await _context.Categorias.FirstOrDefaultAsync(x => x.Id == id);
+            var usuarioIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var usuarioId = Guid.Parse(usuarioIdStr);
+
+            var c = await _context.Categorias
+                .FirstOrDefaultAsync(x => x.Id == id && (x.UsuarioId == usuarioId && !x.EPadrao));
+
             if (c == null) return NotFound();
+
             c.Nome = dto.Nome;
             c.Tipo = dto.Tipo;
             c.Descricao = dto.Descricao;
+
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -99,11 +130,14 @@ namespace HammAPI.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var categoriaPadrao = await _context.Categorias.AnyAsync(c => c.EPadrao == false);
-            if (!categoriaPadrao) return BadRequest(new { message = "Categorias padrão não podem ser deletadas." });
+            var usuarioIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var usuarioId = Guid.Parse(usuarioIdStr);
 
-            var c = await _context.Categorias.FindAsync(id);
+            var c = await _context.Categorias
+                .FirstOrDefaultAsync(x => x.Id == id && (x.UsuarioId == usuarioId && !x.EPadrao));
+
             if (c == null) return NotFound();
+
             _context.Categorias.Remove(c);
             await _context.SaveChangesAsync();
             return NoContent();

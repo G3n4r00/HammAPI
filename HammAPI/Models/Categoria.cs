@@ -26,6 +26,12 @@
         [Column("descricao")]
         public string? Descricao { get; set; }
 
+        [Column("id_usuario")]
+        public Guid? UsuarioId { get; set; } // null para categorias padrão
+
+        [ForeignKey("UsuarioId")]
+        public Usuario Usuario { get; set; }
+
         // Navegação
         public ICollection<Transacao> Transacoes { get; set; }
     }

@@ -14,6 +14,11 @@ namespace HammAPI.Services
             _context = context;
         }
 
+        public async Task<bool> UsuarioExisteAsync(Guid usuarioId)
+        {
+            return await _context.Usuarios.AnyAsync(u => u.Id == usuarioId);
+        }
+
         public async Task<RelatorioDTO> GerarRelatorioAsync(Guid usuarioId, int? mes, int? ano)
         {
             var query = _context.Transacoes

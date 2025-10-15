@@ -3,12 +3,15 @@ using HammAPI.DTOs;
 using HammAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using System;
 
 namespace HammAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class MetasController : ControllerBase
     {
         private readonly HammAPIDbContext _context;
@@ -21,8 +24,12 @@ namespace HammAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MetaDTO>>> GetAll()
         {
+            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (usuarioId == null) return Unauthorized();
+
             var list = await _context.Metas
                 .AsNoTracking()
+                .Where(m => m.UsuarioId == Guid.Parse(usuarioId)) // Apenas metas do usuário logado
                 .Select(m => new MetaDTO
                 {
                     Id = m.Id,
@@ -34,9 +41,9 @@ namespace HammAPI.Controllers
                     DataAlvo = m.DataAlvo,
                     Descricao = m.Descricao,
                     Status = m.Status
-
                 })
                 .ToListAsync();
+
             return Ok(list);
         }
 
@@ -48,8 +55,15 @@ namespace HammAPI.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<MetaDTO>> Get(Guid id)
         {
-            var m = await _context.Metas.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (usuarioId == null) return Unauthorized();
+
+            var m = await _context.Metas
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id && x.UsuarioId == Guid.Parse(usuarioId));
+
             if (m == null) return NotFound();
+
             return Ok(new MetaDTO
             {
                 Id = m.Id,
@@ -73,35 +87,37 @@ namespace HammAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<MetaDTO>> Create(CreateMetaDTO dto)
         {
-            var userExists = await _context.Usuarios.AnyAsync(u => u.Id == dto.UsuarioId);
-            if (!userExists) return BadRequest(new { message = "Usuário não encontrado." });
+            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (usuarioId == null) return Unauthorized();
 
             var m = new Meta
             {
                 Nome = dto.Nome,
-                UsuarioId = dto.UsuarioId,
+                UsuarioId = Guid.Parse(usuarioId), // 🔒 Pega do JWT
                 ValorObjetivo = dto.ValorObjetivo,
                 ValorAtual = dto.ValorAtual,
                 DataInicio = dto.DataInicio ?? DateTime.UtcNow,
                 DataAlvo = dto.DataAlvo,
                 Descricao = dto.Descricao,
                 Status = dto.Status ?? "EmProgresso"
-
             };
+
             _context.Metas.Add(m);
             await _context.SaveChangesAsync();
 
             var result = new MetaDTO
             {
-                Nome = dto.Nome,
-                UsuarioId = dto.UsuarioId,
-                ValorObjetivo = dto.ValorObjetivo,
-                ValorAtual = dto.ValorAtual,
-                DataInicio = dto.DataInicio ?? DateTime.UtcNow,
-                DataAlvo = dto.DataAlvo,
-                Descricao = dto.Descricao,
-                Status = dto.Status ?? "EmProgresso"
+                Id = m.Id,
+                Nome = m.Nome,
+                UsuarioId = m.UsuarioId,
+                ValorObjetivo = m.ValorObjetivo,
+                ValorAtual = m.ValorAtual,
+                DataInicio = m.DataInicio,
+                DataAlvo = m.DataAlvo,
+                Descricao = m.Descricao,
+                Status = m.Status
             };
+
             return CreatedAtAction(nameof(Get), new { id = m.Id }, result);
         }
 
@@ -114,14 +130,19 @@ namespace HammAPI.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, UpdateMetaDTO dto)
         {
-            var m = await _context.Metas.FirstOrDefaultAsync(x => x.Id == id);
+            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (usuarioId == null) return Unauthorized();
+
+            var m = await _context.Metas.FirstOrDefaultAsync(x => x.Id == id && x.UsuarioId == Guid.Parse(usuarioId));
             if (m == null) return NotFound();
+
             m.Nome = dto.Nome;
             m.ValorObjetivo = dto.ValorObjetivo;
             m.ValorAtual = dto.ValorAtual;
             m.DataAlvo = dto.DataAlvo;
             m.Descricao = dto.Descricao;
             m.Status = dto.Status;
+
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -134,9 +155,12 @@ namespace HammAPI.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (usuarioId == null) return Unauthorized();
 
-            var m = await _context.Metas.FindAsync(id);
+            var m = await _context.Metas.FirstOrDefaultAsync(x => x.Id == id && x.UsuarioId == Guid.Parse(usuarioId));
             if (m == null) return NotFound();
+
             _context.Metas.Remove(m);
             await _context.SaveChangesAsync();
             return NoContent();

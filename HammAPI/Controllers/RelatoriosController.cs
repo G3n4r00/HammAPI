@@ -1,11 +1,15 @@
 ﻿using HammAPI.DTOs;
 using HammAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 
 namespace HammAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class RelatoriosController : ControllerBase
     {
         private readonly RelatorioService _relatoriosService;
@@ -18,39 +22,37 @@ namespace HammAPI.Controllers
         /// <summary>
         /// Gera um relatório financeiro para o usuário informado.
         /// </summary>
-        /// <param name="usuarioId">ID do usuário</param>
         /// <param name="mes">Mês de referência (opcional)</param>
         /// <param name="ano">Ano de referência (opcional)</param>
         /// <returns>Retorna o relatório em formato JSON no corpo da resposta</returns>
-        [HttpGet("{usuarioId}")]
-        public async Task<ActionResult<RelatorioDTO>> GerarRelatorio(
-            Guid usuarioId, [FromQuery] int? mes, [FromQuery] int? ano)
+        [HttpGet]
+        public async Task<ActionResult<RelatorioDTO>> GerarRelatorio([FromQuery] int? mes, [FromQuery] int? ano)
         {
-            var relatorio = await _relatoriosService.GerarRelatorioAsync(usuarioId, mes, ano);
+            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (usuarioId == null) return Unauthorized();
+
+            var relatorio = await _relatoriosService.GerarRelatorioAsync(Guid.Parse(usuarioId), mes, ano);
             return Ok(relatorio);
         }
 
         /// <summary>
         /// Gera e baixa o relatório financeiro como arquivo JSON.
         /// </summary>
-        /// <param name="usuarioId">ID do usuário</param>
         /// <param name="mes">Mês de referência (opcional)</param>
         /// <param name="ano">Ano de referência (opcional)</param>
         /// <returns>Arquivo JSON para download</returns>
-        [HttpGet("{usuarioId}/download")]
-        public async Task<IActionResult> DownloadRelatorio(
-        Guid usuarioId, [FromQuery] int? mes, [FromQuery] int? ano)
+        [HttpGet("download")]
+        public async Task<IActionResult> DownloadRelatorio([FromQuery] int? mes, [FromQuery] int? ano)
         {
-            var relatorio = await _relatoriosService.GerarRelatorioAsync(usuarioId, mes, ano);
+            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (usuarioId == null) return Unauthorized();
 
-            // Serializa para JSON
+            var relatorio = await _relatoriosService.GerarRelatorioAsync(Guid.Parse(usuarioId), mes, ano);
+
             var json = System.Text.Json.JsonSerializer.Serialize(relatorio,
                 new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
 
-            // Converte para bytes
             var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-
-            // Define nome do arquivo
             var fileName = $"relatorio_{usuarioId}_{mes ?? 0}_{ano ?? DateTime.UtcNow.Year}.json";
 
             return File(bytes, "application/json", fileName);

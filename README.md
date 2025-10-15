@@ -99,7 +99,13 @@ Certifique-se de que as seguintes ferramentas estão instaladas em seu ambiente:
 
     ⚠️ **Atenção**: Se você alterar a porta no `docker-compose.yml`, lembre-se de atualizar o endereço.
 
-5.  **Parar os containers**
+    Primeiramente registre seu usuário através do endpoint de registro.
+
+    Após registar seu usuário faça seu login e pegue o Token de acesso.
+
+    Tendo o Token de acesso vá ao topo da página do swagger e cole o Token gerado na caixa de input.
+    
+6.  **Parar os containers**
 
     Para parar e remover os containers sem excluir os volumes de dados do banco:
 

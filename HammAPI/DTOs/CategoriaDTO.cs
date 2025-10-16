@@ -17,6 +17,8 @@ namespace HammAPI.DTOs
         public bool EPadrao { get; init; }
 
         public string? Descricao { get; init; }
+
+        public Guid? UsuarioId { get; init; } // visível apenas se for do próprio usuário
     }
 
     public record CreateCategoriaDTO
